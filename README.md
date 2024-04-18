@@ -18,7 +18,7 @@ A API vai servir para alimentar uma base de dados que futuramente será usada pa
 
 Objetivos:
 
-1. Criar uma Rest API em Python que faça a consulta no site da Embrapa.
+1. Criar uma Rest API em Python que faça a consulta no site da Embrapa
 2.  A API deve ser documentada.
 3.  É recomendável (não obrigatório) a escolha de um método de autenticação (JWT, por exemplo)
 4. Criar um plano para fazer o deploy da API, desenhando a arquitetura do projeto desde a ingestão até a alimentação do modelo (aqui não é necessário elaborar um modelo de ML, mas é preciso escolher um cenário interessante em que a API possa ser utilizada)
