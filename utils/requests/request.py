@@ -32,30 +32,8 @@ def get_request(url):
         if response.status_code == 200:
 
             soup = BeautifulSoup(response.text, 'html.parser')
-            filter = soup.thead.parent
-            
-            # criar logica para identificar quantas colunas tem cada seção
+            return soup.thead.parent
 
-            # PROBLEMA DE ESTRUTURA
-            # quando eu fizer o loop, será um loop de todos os anos, considerando isto, haverá várias colunas repetidas.
-            # pensar no tratamento para isto. talvez, limitar de acordo com a aba que está sendo processada.
-
-            lenght_columns = len(filter.find_all('th'))
-            print(lenght_columns)
-            if lenght_columns != 0:
-                for i in range(len(filter.find_all('th'))):
-                    print(filter.find_all('th')[i].string.strip()) 
-                    # collect.add_column(filter.find_all('th')[i].string.strip())
-                lenght_columns -= 1
-            print(lenght_columns)
-            # resolver esse problema, considerando que o loop acontecerá várias vezees e os valores internos serão resetados, talvez colocá-los por fora
-
-            # logica para armazenar os dados no dataframe?
-            # for i in range(len(filter.find_all('td'))):
-                # print(filter.find_all('td')[i].string.strip())
-                # collect.add_data(filter.find_all('td')[i].string.strip())
-
-            
         else: 
             print('Fail Connection')
             
@@ -88,14 +66,40 @@ def processamento(url, url_abas, year_list):
 
     return viniferas, americanas_hibridas
 
-def get_data():
+def get_data_loop():
     # funcao responsavel para chamada das demais funcoes
+
+    '''
+    criar logica para identificar quantas colunas tem cada seção
+
+    PROBLEMA DE ESTRUTURA
+    quando eu fizer o loop, será um loop de todos os anos, considerando isto, haverá várias colunas repetidas.
+    pensar no tratamento para isto. talvez, limitar de acordo com a aba que está sendo processada.
+    resolver esse problema, considerando que o loop acontecerá várias vezees e os valores internos serão resetados, talvez colocá-los por fora
+    '''
     
     urls = producao(url, url_abas, year_list)
     # url_1, url_2 = processamento(url, url_abas, year_list)
     
     for i in range(len(urls)):
-        get_request(urls[i])
+        filter = get_request(urls[i])
+
+        lenght_columns = len(filter.find_all('th'))
+    
+        print(lenght_columns)
+        if lenght_columns != 0:
+            for i in range(len(filter.find_all('th'))):
+                print(filter.find_all('th')[i].string.strip()) 
+                # collect.add_column(filter.find_all('th')[i].string.strip())
+        
+            lenght_columns -= 1
+        print(lenght_columns)
+
+        # logica para armazenar os dados no dataframe?
+            # for i in range(len(filter.find_all('td'))):
+                # print(filter.find_all('td')[i].string.strip())
+                # collect.add_data(filter.find_all('td')[i].string.strip())
+
 
     # url_1, url_2 = processamento(url, url_abas, year_list)
     # print(url_1, url_2)
@@ -105,17 +109,14 @@ def get_data():
 
     # 1. inserir os dados um a um?
     # 2. manter os dados em uma lista e depois inseri-los?
-    
+
 if __name__ == '__main__':
     # print(producao(url, url_abas, year_list))
     # get_request(url)
-    get_data()
+    get_data_loop()
     print('Collect Finished')
 
     # print(collect.columns)
 
     # print(url_abas['processamento']['aba'])
     # print(url_abas['processamento']['sem_classificacao'])
-    
-
- 
