@@ -32,7 +32,33 @@ def get_request(url):
         if response.status_code == 200:
 
             soup = BeautifulSoup(response.text, 'html.parser')
-            return soup.thead.parent
+            filter = soup.thead.parent
+            
+            # columns.append(filter.find_all('th').string.strip())
+            # print(columns)
+            # print(lenght_columns)
+
+            # print(type(filter.find_all('th')))
+            # for x in filter.find_all('th'):
+                # print(x)
+
+            # columns = []
+
+            if not 'columns_dataset' in globals():
+                columns_dataset = []
+
+            if len(columns_dataset) != len(filter.find_all('th')):
+                columns_dataset = [filter.find_all('th')[i].string.strip() for i in range(len(filter.find_all('th')))]
+                print('#DEBUG')
+
+
+            print(columns_dataset)
+            # if lenght_columns != 0:
+                # for i in range(len(filter.find_all('th'))):
+                    # print(filter.find_all('th')[i].string.strip()) 
+                    # collect.add_column(filter.find_all('th')[i].string.strip())
+            
+                # lenght_columns -= 1 
 
         else: 
             print('Fail Connection')
@@ -82,18 +108,7 @@ def get_data_loop():
     # url_1, url_2 = processamento(url, url_abas, year_list)
     
     for i in range(len(urls)):
-        filter = get_request(urls[i])
-
-        lenght_columns = len(filter.find_all('th'))
-    
-        print(lenght_columns)
-        if lenght_columns != 0:
-            for i in range(len(filter.find_all('th'))):
-                print(filter.find_all('th')[i].string.strip()) 
-                # collect.add_column(filter.find_all('th')[i].string.strip())
-        
-            lenght_columns -= 1
-        print(lenght_columns)
+        get_request(urls[i])
 
         # logica para armazenar os dados no dataframe?
             # for i in range(len(filter.find_all('td'))):
