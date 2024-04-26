@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 
 
-# classe de dataframe vai receber os valores que foram raspadas da pagina web
-# atraves dos loops do get_data()
-# eh importante entender como sera definido os campos titulos dos dataframes, e ainda aqui, teremos uma serie de dataframes diferentes
-
-
+'''
+classe de dataframe vai receber os valores que foram raspadas da pagina web
+atraves dos loops do get_data()
+eh importante entender como sera definido os campos titulos dos dataframes, e ainda aqui, teremos uma serie de dataframes diferentes
+'''
 class Structure:
     def __init__(self, data):
         self.columns = []

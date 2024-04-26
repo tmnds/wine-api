@@ -1,5 +1,11 @@
 class Collector:
 
+    '''
+    Classe responsável pela coleta dos dados
+
+    Realizará o armazenamento em memória. Pensar na utilização de Threads e paralelismo.
+    '''
+
     def __init__(self):
         self.columns = []
         self.data = []
