@@ -3,20 +3,11 @@ import numpy as np
 
 
 '''
-classe de dataframe vai receber os valores que foram raspadas da pagina web
-atraves dos loops do get_data()
-eh importante entender como sera definido os campos titulos dos dataframes, e ainda aqui, teremos uma serie de dataframes diferentes
+Armazenar dados das colunas que já sao listas em outras listas? Nao faz muito sentido
 '''
-class Structure:
-    def __init__(self, data):
-        self.columns = []
-        self.data = data
-    
-    def add_data(self, data):
-        self.columns.append(data)
-    
-    # def get_values(self):
-
+def schema(data, columns):
+    df = pd.DataFrame(data=data, columns=columns)
+    print(df)
 
 if __name__ == '__main__':
 
@@ -25,29 +16,3 @@ if __name__ == '__main__':
     struct.columns.append(column2)
 
     print(struct.columns)
-
-
-
-'''
-
-column1= 'Quantidade'
-column2= 'Valor'
-columns = ['Quantidade', 'Valor']
-data = {columns[0]: [1, 2, 3], columns[1]: [1.43, 1.39, 1.00]}
-df = pd.DataFrame(data=data, columns=columns)
-
-
-columns = ['column1', 'column2', 'column3']
-
-columns = ['column1', 'column2']
-
-
-qtt_columns = len(columns) # saber a quantidade de colunas para criar o dataframe
-
-data = {
-    columns[0]: [data_array],
-    columns[1]: [data_array],
-    columns[2]: [data_array]
-}
-
-'''
