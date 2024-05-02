@@ -1,7 +1,7 @@
 '''
 Script de chamada
-...
 '''
+import timeit
 
 from utils.requests.request import *
 from utils.structure.df_creator import schema
@@ -12,16 +12,22 @@ def get_data():
     Função responável pela chamada das funções que contêm as urls e respectivos anos do Website.
         Ex: Produção, Processamento ...
     
-    Questões:
+    Etapa 1
+        -> Ao definir as colunas, deverá ser inserido a nova coluna ao final 'Ano'
+    Etapa 2
+        -> Em cada loop de Ano, os dataframes devem possuir a informação de cada Loop, no seguinte formato:
+        Ano 1970
+        [['VINHO DE MESA', '217.208.604', '1970'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', '1970'] ...]
+        Ano 1971
+        [['VINHO DE MESA', '217.208.604', '1971'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', '1971'] ...]
 
-    1. Quando eu fizer o loop, será um loop de todos os anos, considerando isto, haverá várias colunas repetidas, talvez, limitar de acordo com a aba que está sendo processada.
-        - Ou dividir em uma função especifica para cada aba a ser processada.
     '''
     urls = producao(url, url_abas, year_list)
     
     for i in range(len(urls)): # Esse loop pode só funcionar para produção, para os demais pode dar problema
         filter = get_request(urls[i])
         # print(year_list[i])
+        print(filter)
 
         if collect.columns is None:
             collect.add_column(
@@ -40,29 +46,14 @@ def get_data():
 
 
 if __name__ == '__main__':
-    get_data()
-    print(collect.columns)
-    print(collect.data)
 
-    schema(collect.data, collect.columns)
+    # get_dat = timeit.timeit("get_data()", globals=globals(),number=1)
+    get_data()
+    # print(f'tempo: {get_data}') # 150.86416650001775
+    # print(collect.columns)
+    # print(collect.data)
+
     print('Collect Finished')
 
 
 
-    '''
-
-    Etapa 1
-        -> Ao definir as colunas, deverá ser inserido a nova coluna ao final 'Ano'
-
-    Etapa 2
-        -> Em cada loop de Ano, os dataframes devem possuir a informação de cada Loop, no seguinte formato:
-
-        Ano 1970
-
-        [['VINHO DE MESA', '217.208.604', '1970'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', '1970'] ...]
-
-        Ano 1971
-
-        [['VINHO DE MESA', '217.208.604', '1971'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', 'coluna3'], ['coluna1', 'coluna2', '1971'] ...]
-
-    '''
