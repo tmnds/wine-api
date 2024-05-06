@@ -9,6 +9,15 @@ def schema(data, columns):
     df = pd.DataFrame(data=data, columns=columns)
     print(df)
 
+
+# if len(columns) == 2:
+#     struct = { 
+#         columns[0]: [data],
+#         columns[1]: [data],
+
+    
+#     }
+
 if __name__ == '__main__':
 
     struct = Structure(data)

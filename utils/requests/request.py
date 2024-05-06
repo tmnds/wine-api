@@ -24,8 +24,9 @@ def get_request(url):
 
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-        
+            
             return soup.thead.parent
+        
         else: 
             print('Fail Connection')
             
@@ -55,7 +56,10 @@ def processamento(url, url_abas, year_list):
         for x in range(len(year_list))
     ]
 
-    return viniferas, americanas_hibridas
+    return {
+        'viniferas': viniferas,
+        'americanas_hibridas': americanas_hibridas
+    }
 
 if __name__ == '__main__':
     get_data()
