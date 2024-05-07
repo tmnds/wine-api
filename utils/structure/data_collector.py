@@ -16,4 +16,10 @@ class Collector:
     def add_data(self, data):
         self.data.append(data)
     
+    def adjust_data(self, data):
+        new_data = []
+        [new_data.extend(element) for element in data]
+        return new_data
+        
+    
     

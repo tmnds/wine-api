@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from utils.config import url_abas
-# from utils.structure.df_creator import Structure
-from utils.structure.data_collector import Collector
 
 url = 'http://vitibrasil.cnpuv.embrapa.br/index.php?'
 year_list = [f'ano={x}' for x in range(1970, 2023)]
@@ -12,8 +10,6 @@ year_list = [f'ano={x}' for x in range(1970, 2023)]
 
     - Pensar se poderá ser dividida em duas classes para realização do tratamento dos dados.
 '''
-
-collect = Collector()
 
 def get_request(url):
     
@@ -27,11 +23,8 @@ def get_request(url):
             
             return soup.thead.parent
         
-        else: 
-            print('Fail Connection')
-            
     except Exception as e:
-        print(f'Fail Connection: Error - {e}')
+        return f'Fail Connection: Error - {e}'
 
 def producao(url, url_abas, year_list):
     # retorna uma lista das urls a serem consultadas do topico de producao
@@ -60,6 +53,3 @@ def processamento(url, url_abas, year_list):
         'viniferas': viniferas,
         'americanas_hibridas': americanas_hibridas
     }
-
-if __name__ == '__main__':
-    get_data()
