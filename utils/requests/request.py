@@ -50,6 +50,8 @@ def processamento(url, url_abas, year_list):
     ]
 
     return {
-        'viniferas': viniferas,
-        'americanas_hibridas': americanas_hibridas
+        'processamento': {
+            'viniferas': viniferas,
+            'americanas_hibridas': americanas_hibridas
+        }
     }

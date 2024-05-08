@@ -18,11 +18,13 @@ def get_data():
     urls = processamento(url, url_abas, year_list)
 
     if isinstance(urls, dict):
-        print('dict')
+        print('Dict #DEBUG')
         get_data_dict(urls)
 
     if isinstance(urls, list):
+        print('Lists #DEBUG')
         get_data_list(urls)
+        
 
 def get_data_list(urls):
     
@@ -49,26 +51,37 @@ def get_data_list(urls):
     
 def get_data_dict(urls):
 
-    for i in range(len(urls)): 
-        filter = get_request(urls[i])
+    for key, value in urls.items():
+        key_json = key
+        values_json = value.keys()
 
-        if collect.columns is None:
-            collect.add_column(
-                [filter.find_all('th')[i].string.strip() for i in range(len(filter.find_all('th')))]
-            )
-            collect.columns.append('Ano')
+    for types in values_json:
+        print(types)
+        
+        for i in range(len(urls[key_json][types])):
+            # print(urls[key_json][types][i])
+            filter = get_request(urls[key_json][types][i])
 
-        collect.add_data(
-            [
+            if collect.columns is None:
+                collect.add_column(
+                    [filter.find_all('th')[i].string.strip() for i in range(len(filter.find_all('th')))]
+                )
+                collect.columns.append('Ano')
+
+            collect.add_data(
                 [
-                    _.find_all('td')[0].get_text(strip=True), 
-                    _.find_all('td')[1].get_text(strip=True), 
-                    year_list[i][4:]
-                ] 
-                 for _ in filter.find_all('tr') 
-                    if len(_.find_all('td')) == 2
-            ]
-        )
+                    [
+                        _.find_all('td')[0].get_text(strip=True), 
+                        _.find_all('td')[1].get_text(strip=True), 
+                        year_list[i][4:]
+                    ] 
+                    for _ in filter.find_all('tr') 
+                        if len(_.find_all('td')) == 2
+                ]
+            )
+        
+        new_data = collect.adjust_data(collect.data)
+        schema(new_data, collect.columns)
 
 
 if __name__ == '__main__':
@@ -78,6 +91,17 @@ if __name__ == '__main__':
 
     get_data()
 
+    # new_data = collect.adjust_data(collect.data)
+    # schema(new_data, collect.columns)
+    '''
+    Ajuste a ser implementado antes de chamar o resto dos processos!!
+
+        - Falta fazer com que o dataframe de cada um dos processos seja criado de forma independente (RESOLVIDO)
+
+        - O Dataframe está appendando os valores;
+        - É preciso que os dataframes sejam idenpendentes; 1 daftaframe para cada aba
+    '''
+    
     # new_data = collect.adjust_data(collect.data)
     # schema(new_data, collect.columns)
 
