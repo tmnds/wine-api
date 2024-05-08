@@ -4,7 +4,7 @@ Script de chamada
 import timeit
 
 from utils.requests.request import *
-from utils.structure.df_creator import schema
+from utils.structure.df_creator import Frame
 from utils.structure.data_collector import Collector
 
 collect = Collector()
@@ -14,8 +14,11 @@ def get_data():
     Função responável pela chamada das funções que contêm as urls e respectivos anos do Website.
         Ex: Produção, Processamento ...
     '''
-    # urls = producao(url, url_abas, year_list)
-    urls = processamento(url, url_abas, year_list)
+    # urls = get_producao(url, url_abas, year_list)
+    # urls = get_comercializacao(url, url_abas, year_list)
+    urls = get_processamento(url, url_abas, year_list)
+    # urls = get_importacao(url, url_abas, year_list)
+    # urls = get_exportacao(url, url_abas, year_list)
 
     if isinstance(urls, dict):
         print('Dict #DEBUG')
@@ -44,10 +47,13 @@ def get_data_list(urls):
                     _.find_all('td')[1].get_text(strip=True), 
                     year_list[i][4:]
                 ] 
-                 for _ in filter.find_all('tr') 
+                for _ in filter.find_all('tr') 
                     if len(_.find_all('td')) == 2
             ]
         )
+        
+    frame = Frame(collect.adjust_data(), collect.columns)
+    frame.print_frame()
     
 def get_data_dict(urls):
 
@@ -57,6 +63,7 @@ def get_data_dict(urls):
 
     for types in values_json:
         print(types)
+        # collect.clear_list()
         
         for i in range(len(urls[key_json][types])):
             # print(urls[key_json][types][i])
@@ -73,15 +80,22 @@ def get_data_dict(urls):
                     [
                         _.find_all('td')[0].get_text(strip=True), 
                         _.find_all('td')[1].get_text(strip=True), 
+                        _.find_all('td')[2].get_text(strip=True) if len(_.find_all('td')) >= 3 else None,  #problema
                         year_list[i][4:]
                     ] 
                     for _ in filter.find_all('tr') 
-                        if len(_.find_all('td')) == 2
+                        if len(_.find_all('td')) >= 2
                 ]
             )
+            
+            
+        print(collect.data)
+        # new_data = collect.adjust_data()
+        frame = Frame(collect.adjust_data(), collect.columns)
+        frame.print_frame()
         
-        new_data = collect.adjust_data(collect.data)
-        schema(new_data, collect.columns)
+        collect.clear_list()
+        
 
 
 if __name__ == '__main__':
@@ -90,20 +104,5 @@ if __name__ == '__main__':
     # print(f'tempo: {get_dat}') # 150.86416650001775
 
     get_data()
-
-    # new_data = collect.adjust_data(collect.data)
-    # schema(new_data, collect.columns)
-    '''
-    Ajuste a ser implementado antes de chamar o resto dos processos!!
-
-        - Falta fazer com que o dataframe de cada um dos processos seja criado de forma independente (RESOLVIDO)
-
-        - O Dataframe está appendando os valores;
-        - É preciso que os dataframes sejam idenpendentes; 1 daftaframe para cada aba
-    '''
-    
-    # new_data = collect.adjust_data(collect.data)
-    # schema(new_data, collect.columns)
-
     print('Collect Finished')
     

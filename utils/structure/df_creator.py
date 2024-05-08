@@ -2,26 +2,15 @@ import pandas as pd
 import numpy as np
 
 
-'''
-Armazenar dados das colunas que já sao listas em outras listas? Nao faz muito sentido
-'''
-def schema(data, columns):
-    df = pd.DataFrame(data=data, columns=columns)
-    print(df)
 
-
-# if len(columns) == 2:
-#     struct = { 
-#         columns[0]: [data],
-#         columns[1]: [data],
-
+class Frame:
     
-#     }
-
-if __name__ == '__main__':
-
-    struct = Structure(data)
-    struct.columns.append(column1)
-    struct.columns.append(column2)
-
-    print(struct.columns)
+    def __init__(self, data, columns):
+        self.df = pd.DataFrame(data=data, columns=columns)
+    
+    '''
+    Armazenar dados das colunas que já sao listas em outras listas? Nao faz muito sentido
+    '''
+    
+    def print_frame(self):
+        print(self.df)
