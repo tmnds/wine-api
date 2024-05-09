@@ -16,9 +16,9 @@ def get_data():
     '''
     # urls = get_producao(url, url_abas, year_list)
     # urls = get_comercializacao(url, url_abas, year_list)
-    urls = get_processamento(url, url_abas, year_list)
+    # urls = get_processamento(url, url_abas, year_list)
     # urls = get_importacao(url, url_abas, year_list)
-    # urls = get_exportacao(url, url_abas, year_list)
+    urls = get_exportacao(url, url_abas, year_list)
 
     if isinstance(urls, dict):
         print('Dict #DEBUG')
@@ -80,16 +80,27 @@ def get_data_dict(urls):
                     [
                         _.find_all('td')[0].get_text(strip=True), 
                         _.find_all('td')[1].get_text(strip=True), 
-                        _.find_all('td')[2].get_text(strip=True) if len(_.find_all('td')) >= 3 else None,  #problema
+                        _.find_all('td')[2].get_text(strip=True),
                         year_list[i][4:]
                     ] 
+                    if len(_.find_all('td')) > 2
+                    else
+                    [
+                        _.find_all('td')[0].get_text(strip=True) if len(_.find_all('td')) == 2 else None, 
+                        _.find_all('td')[1].get_text(strip=True) if len(_.find_all('td')) == 2 else None, 
+                        year_list[i][4:] if len(_.find_all('td')) == 2 else None
+                    ] 
                     for _ in filter.find_all('tr') 
-                        if len(_.find_all('td')) >= 2
                 ]
             )
             
-            
-        print(collect.data)
+        '''
+        Pontos de Ajuste:
+            Considerando que o ELSE da lista de comprehension deveria apenas trazer Null para a primeira linha apenas do topico de comercializacao, por ser o unico dict com 3 colunas. 
+
+            1. Por que isso acontece com todos os outros topicos DICT, ex: importacao, exportacao..;
+            2. Como resolver os valores Null;
+        '''
         # new_data = collect.adjust_data()
         frame = Frame(collect.adjust_data(), collect.columns)
         frame.print_frame()

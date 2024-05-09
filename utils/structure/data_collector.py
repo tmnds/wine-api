@@ -23,5 +23,3 @@ class Collector:
     
     def clear_list(self):
         self.data.clear()
-    
-    
