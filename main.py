@@ -1,7 +1,4 @@
-'''
-Script de chamada
-'''
-import timeit
+# import timeit
 
 from utils.requests.http_request import Requisition
 from utils.structure.df_creator import Frame
