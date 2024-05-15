@@ -23,4 +23,4 @@ url_abas = {
         'uva_fresca': '&subopcao=subopt_03', 
         'suco_uva': '&subopcao=subopt_04'
     }
-    }
+}
