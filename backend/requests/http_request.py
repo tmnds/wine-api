@@ -1,15 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
+from backend.config import url_abas
+
 
 class Requisition:
     '''
     Class responsável pela solicitação HTTP na página, e tratamento dos dados.
         - Pensar se poderá ser dividida em duas classes para realização do tratamento dos dados.
     '''
+    year_list = [f'ano={i}' for i in range(1970, 2023)]
 
-    def __init__(self, url_abas):
+    def __init__(self):
         self.url = 'http://vitibrasil.cnpuv.embrapa.br/index.php?'
-        self.year_list = [f'ano={i}' for i in range(1970, 2023)]
+        
         self.url_abas = url_abas
 
     def get_request(self, url):
@@ -33,33 +36,39 @@ class Requisition:
     def get_comercializacao(self):
         return [ self.url+ self.year_list[i] + self.url_abas['comercializacao'] for i in range(len(self.year_list))]
 
-    def get_processamento(self):
+    def get_processamento_viniferas(self):
 
-        viniferas = [ 
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['processamento']['aba'] + 
             self.url_abas['processamento']['viniferas']  
             for i in range(len(self.year_list))
         ]
+    
+    def get_processamento_americanas_hibridas(self):
         
-        americanas_hibridas = [ 
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['processamento']['aba'] + 
             self.url_abas['processamento']['americanas_hibridas']  
             for i in range(len(self.year_list))
         ]
-        
-        uva_mesa = [ 
+
+    def get_processamento_uva_mesa(self):
+
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['processamento']['aba'] + 
             self.url_abas['processamento']['uva_mesa']  
             for i in range(len(self.year_list))
         ]
-        
-        sem_classificacao = [ 
+    
+    def get_processamento_sem_classificacao(self):
+
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['processamento']['aba'] + 
@@ -67,110 +76,93 @@ class Requisition:
             for i in range(len(self.year_list))
         ]
         
-        return {
-            'processamento': {
-                'viniferas': viniferas,
-                'americanas_hibridas': americanas_hibridas,
-                'uva_mesa': uva_mesa,
-                'sem_classificacao': sem_classificacao
-            }
-        }
+    def get_importacao_vinho_mesa(self):
 
-
-    def get_importacao(self):
-
-        vinho_mesa = [ 
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['importacao']['aba'] + 
             self.url_abas['importacao']['vinho_mesa']  
             for i in range(len(self.year_list))
         ]
+    
+    def get_importacao_espumante(self):
         
-        espumante = [ 
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['importacao']['aba'] + 
             self.url_abas['importacao']['espumante']  
             for i in range(len(self.year_list))
         ]
-        
-        uva_fresca = [ 
+    
+    def get_importacao_uva_fresca(self):
+
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['importacao']['aba'] + 
             self.url_abas['importacao']['uva_fresca']  
             for i in range(len(self.year_list))
         ]
-        
-        uva_passa = [ 
+    
+    def get_importacao_uva_passa(self):
+
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['importacao']['aba'] + 
             self.url_abas['importacao']['uva_passa']  
             for i in range(len(self.year_list))
         ]
+    def get_importacao_suco_uva(self):
         
-        suco_uva = [ 
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['importacao']['aba'] + 
             self.url_abas['importacao']['suco_uva']  
             for i in range(len(self.year_list))
         ]
-        
-        return {
-            'importacao': {
-                'vinho_mesa': vinho_mesa,
-                'espumante': espumante,
-                'uva_fresca': uva_fresca,
-                'uva_passa': uva_passa,
-                'suco_uva': suco_uva
-            }
-        }
 
-    def get_exportacao(self):
+    def get_exportacao_vinho_mesa(self):
 
-        vinho_mesa = [ 
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['exportacao']['aba'] + 
             self.url_abas['exportacao']['vinho_mesa']  
             for i in range(len(self.year_list))
         ]
-        
-        espumante = [ 
+
+    def get_exportacao_espumante(self):
+
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['exportacao']['aba'] + 
             self.url_abas['exportacao']['espumante']  
             for i in range(len(self.year_list))
         ]
+    def get_exportacao_uva_fresca(self):
         
-        uva_fresca = [ 
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['exportacao']['aba'] + 
             self.url_abas['exportacao']['uva_fresca']  
             for i in range(len(self.year_list))
         ]
-        
-        suco_uva = [ 
+    
+    def get_exportacao_suco_uva(self):
+    
+        return [ 
             self.url + 
             self.year_list[i] + 
             self.url_abas['exportacao']['aba'] + 
             self.url_abas['exportacao']['suco_uva']  
             for i in range(len(self.year_list))
         ]
-        
-        return {
-            'exportacao': {
-                'vinho_mesa': vinho_mesa,
-                'espumante': espumante,
-                'uva_fresca': uva_fresca,
-                'suco_uva': suco_uva
-            }
-        }
     
 if __name__ == '__main__':
     get_processamento(url, url_abas, year_list)

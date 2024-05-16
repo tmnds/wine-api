@@ -1,15 +1,14 @@
+from backend.requests.http_request import Requisition
 
 
-
-class Collector:
-
+class Collector(Requisition):
     '''
     Classe responsável pela coleta dos dados
-
     Realizará o armazenamento em memória. Pensar na utilização de Threads e paralelismo.
     '''
 
     def __init__(self):
+        super().__init__()
         self.columns = None
         self.data = []
 
@@ -30,23 +29,23 @@ class Collector:
     def get_full_data(self, urls):
     
         for i in range(len(urls)): 
-            filter = req.get_request(urls[i])
+            filter = super().get_request(urls[i])
 
-            if self.collect.columns is None:
-                self.collect.add_column(
+            if self.columns is None:
+                self.add_column(
                     [filter.find_all('th')[i].string.strip() for i in range(len(filter.find_all('th')))]
                 )
-                self.collect.columns.append('Ano')
+                self.columns.append('Ano')
 
-            self.collect.add_data(
+            self.add_data(
                 [
                     [
                         _.find_all('td')[0].get_text(strip=True), 
                         _.find_all('td')[1].get_text(strip=True), 
-                        req.year_list[i][4:]
+                        Requisition.year_list[i][4:]
                     ] 
                     for _ in filter.find_all('tr') 
                         if len(_.find_all('td')) == 2
                 ]
             )
-        return self.data
+        return self.adjust_data()
