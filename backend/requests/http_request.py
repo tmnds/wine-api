@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from backend.config import url_abas
+# from backend.config import url_abas
+from json import load
 
 
 class Requisition:
@@ -13,7 +14,7 @@ class Requisition:
     def __init__(self):
         self.url = 'http://vitibrasil.cnpuv.embrapa.br/index.php?'
         
-        self.url_abas = url_abas
+        self.url_abas = load( open('backend/config.json') )
 
     def get_request(self, url):
         
