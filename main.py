@@ -22,8 +22,12 @@ url = get_producao()
 
 if __name__ == '__main__':
     collect = Collector()
-    urls, year = collect.get_producao(1970)
-    data = collect.get_data(urls, year)
-    frame = Frame(data, collect.columns)
+    urls = collect.get_full_complex_url('exportacao', 'espumante')
+    print(urls)
+    data = collect.get_full_data(urls)
+    print(collect.columns)
+    print(collect.data)
+    # print(data)
+    # frame = Frame(data, collect.columns)
     
-    print(frame.get_json_data())
+    # print(frame.get_json_data())

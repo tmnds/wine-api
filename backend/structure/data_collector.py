@@ -49,7 +49,7 @@ class Collector(Requisition):
         )
         return self.adjust_data()
 
-    def get_full_data(self, urls):
+    async def get_full_data(self, urls):
     
         for i in range(len(urls)): 
             filter = super().get_request(urls[i])
@@ -60,15 +60,30 @@ class Collector(Requisition):
                 )
                 self.columns.append('Ano')
 
-            self.add_data(
+            if len(self.columns) == 3:
+                self.add_data(
+                    [
+                        [
+                            _.find_all('td')[0].get_text(strip=True), 
+                            _.find_all('td')[1].get_text(strip=True), 
+                            Requisition.year_list[i]
+                        ] 
+                        for _ in filter.find_all('tr') 
+                            if len(_.find_all('td')) == 2
+                    ]
+                )
+            else:
+                self.add_data(
                 [
                     [
                         _.find_all('td')[0].get_text(strip=True), 
                         _.find_all('td')[1].get_text(strip=True), 
-                        Requisition.year_list[i][4:]
+                        _.find_all('td')[2].get_text(strip=True),
+                        Requisition.year_list[i]
                     ] 
                     for _ in filter.find_all('tr') 
-                        if len(_.find_all('td')) == 2
+                        if len(_.find_all('td')) == 3
                 ]
             )
+
         return self.adjust_data()
