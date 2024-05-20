@@ -49,7 +49,7 @@ class Collector(Requisition):
         )
         return self.adjust_data()
 
-    async def get_full_data(self, urls):
+    def get_full_data(self, urls):
     
         for i in range(len(urls)): 
             filter = super().get_request(urls[i])
