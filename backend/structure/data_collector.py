@@ -25,6 +25,29 @@ class Collector(Requisition):
     
     def clear_list(self):
         self.data.clear()
+    
+    def get_data(self, urls, year):
+    
+        filter = super().get_request(urls)
+
+        if self.columns is None:
+            self.add_column(
+                [filter.find_all('th')[i].string.strip() for i in range(len(filter.find_all('th')))]
+            )
+            self.columns.append('Ano')
+
+        self.add_data(
+            [
+                [
+                    _.find_all('td')[0].get_text(strip=True), 
+                    _.find_all('td')[1].get_text(strip=True), 
+                    year
+                ] 
+                for _ in filter.find_all('tr') 
+                    if len(_.find_all('td')) == 2
+            ]
+        )
+        return self.adjust_data()
 
     def get_full_data(self, urls):
     

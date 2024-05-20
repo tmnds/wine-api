@@ -21,11 +21,9 @@ url = get_producao()
 
 
 if __name__ == '__main__':
-    # req = Requisition()
     collect = Collector()
-    urls = collect.get_producao()
-    data = collect.get_full_data(urls)
+    urls, year = collect.get_producao(1970)
+    data = collect.get_data(urls, year)
     frame = Frame(data, collect.columns)
     
     print(frame.get_json_data())
-
