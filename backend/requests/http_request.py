@@ -33,7 +33,7 @@ class Requisition:
         if year not in self.year_list:
             raise Exception('The year entered does not correspond to the value available annual values')
         
-        return self.url + f'ano={str(year)}' + self.url_abas[type], year 
+        return self.url + f'ano={str(year)}' + self.url_abas[type]
 
     def get_full_simple_url(self, type):
         return [ self.url+ f'ano={self.year_list[i]}' + self.url_abas[type] for i in range(len(self.year_list))]

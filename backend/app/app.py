@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+
 from backend.structure.df_creator import Frame
 from backend.structure.data_collector import Collector
 from backend.structure.base_model import ProcessamentoModel, ImportacaoModel, ExportacaoModel
@@ -9,18 +10,24 @@ app = FastAPI()
 collect = Collector()
 
 
+
 @app.get('/')
 def route_default():
     return 'Welcome to my API'
 
+# Get Year data
+
 @app.get('/producao/{year}')
-async def get_production(year):
+async def get_production(year: int):
 
     urls = collect.get_simple_url(year, 'producao')
-    data = collect.get_data(urls)
+    data = collect.get_data(urls, year)
     frame = Frame(data, collect.columns)
     
     return frame.get_json_data()
+
+
+# Get full data
 
 @app.get('/producao')
 async def get_full_production():
