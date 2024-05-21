@@ -37,6 +37,15 @@ async def get_full_production():
     
     return frame.get_json_data()
 
+@app.get('/comercializacao/{year}')
+async def get_commercialization(year):
+
+    urls = collect.get_simple_url(year, 'producao')
+    data = collect.get_data(urls)
+    frame = Frame(data, collect.columns)
+    
+    return frame.get_json_data()
+
 @app.get('/comercializacao')
 async def get_full_commercialization():
     urls = collect.get_full_simple_url('comercializacao')
