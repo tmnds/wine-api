@@ -29,6 +29,7 @@ class Collector(Requisition):
     def get_data(self, urls, year):
     
         filter = super().get_request(urls)
+        self.clear_list()
 
         if self.columns is None:
             self.add_column(
@@ -50,6 +51,8 @@ class Collector(Requisition):
         return self.adjust_data()
 
     def get_full_data(self, urls):
+        
+        self.clear_list()
     
         for i in range(len(urls)): 
             filter = super().get_request(urls[i])

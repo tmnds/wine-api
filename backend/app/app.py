@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, Path
+from typing import Annotated
 
 
 from backend.structure.df_creator import Frame
@@ -18,7 +19,9 @@ def route_default():
 # Get Year data
 
 @app.get('/producao/{year}')
-async def get_production(year: int):
+async def get_production(
+    year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)]
+):
 
     urls = collect.get_simple_url(year, 'producao')
     data = collect.get_data(urls, year)
@@ -26,6 +29,49 @@ async def get_production(year: int):
     
     return frame.get_json_data()
 
+@app.get('/comercializacao/{year}')
+async def get_commercialization(
+    year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)]
+):
+
+    urls = collect.get_simple_url(year, 'comercializacao')
+    data = collect.get_data(urls, year)
+    frame = Frame(data, collect.columns)
+    
+    return frame.get_json_data()
+
+@app.get('/processamento/{year}')
+async def get_processamento(
+    year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)], 
+    subtype: ProcessamentoModel
+):
+    urls = collect.get_complex_url(year, 'processamento', subtype)
+    data = collect.get_data(urls, year)
+    frame = Frame(data, collect.columns)
+    
+    return frame.get_json_data()
+
+@app.get('/importacao/{year}')
+async def get_importacao(
+    year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)], 
+    subtype: ImportacaoModel
+):
+    urls = collect.get_complex_url(year, 'importacao', subtype)
+    data = collect.get_data(urls, year)
+    frame = Frame(data, collect.columns)
+    
+    return frame.get_json_data()
+
+@app.get('/exportacao/{year}')
+async def get_exportacao(
+    year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)], 
+    subtype: ExportacaoModel
+):
+    urls = collect.get_complex_url(year, 'exportacao', subtype)
+    data = collect.get_data(urls, year)
+    frame = Frame(data, collect.columns)
+    
+    return frame.get_json_data()
 
 # Get full data
 
@@ -33,15 +79,6 @@ async def get_production(year: int):
 async def get_full_production():
     urls = collect.get_full_simple_url('producao')
     data = collect.get_full_data(urls)
-    frame = Frame(data, collect.columns)
-    
-    return frame.get_json_data()
-
-@app.get('/comercializacao/{year}')
-async def get_commercialization(year):
-
-    urls = collect.get_simple_url(year, 'producao')
-    data = collect.get_data(urls)
     frame = Frame(data, collect.columns)
     
     return frame.get_json_data()
