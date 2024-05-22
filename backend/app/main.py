@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Path, Depends
+from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
-
+ 
 
 from backend.structure.df_creator import Frame
 from backend.structure.data_collector import Collector
@@ -8,6 +9,7 @@ from backend.structure.base_model import ProcessamentoModel, ImportacaoModel, Ex
 
 
 app = FastAPI()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 collect = Collector()
 
 
@@ -20,7 +22,9 @@ def route_default():
 
 @app.get('/producao/{year}')
 async def get_production(
-    year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)]
+    year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)],
+    token: Annotated[str, Depends(oauth2_scheme)]
+    
 ):
 
     urls = collect.get_simple_url(year, 'producao')
