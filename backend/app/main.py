@@ -5,22 +5,40 @@ from typing import Annotated
 
 from backend.structure.df_creator import Frame
 from backend.structure.data_collector import Collector
-from backend.structure.base_model import ProcessamentoModel, ImportacaoModel, ExportacaoModel
+from backend.structure.base_model import ProcessamentoModel, ImportacaoModel, ExportacaoModel, User
 
 
 app = FastAPI()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 collect = Collector()
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
+#Auth
+
+def fake_decode_token(token):
+    return User(
+        username=token + 'fakedecoded', email='myemail.example.com', full_name='Thales Mendes'
+    )
+
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+    user = fake_decode_token(token)
+    return user
+
+#Teste auth
+
+@app.get('/users/me')
+async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
+    return current_user
+
+# default code
 @app.get('/')
 def route_default():
-    return 'Welcome to my API'
+    return 'Welcome to API Embrapa'
 
 # Get Year data
 
-@app.get('/producao/{year}')
+@app.get('/producao/{year}/token')
 async def get_production(
     year: Annotated[int, Path(title="The ID of the item to get", ge=1970, le=2022)],
     token: Annotated[str, Depends(oauth2_scheme)]
@@ -31,7 +49,8 @@ async def get_production(
     data = collect.get_data(urls, year)
     frame = Frame(data, collect.columns)
     
-    return frame.get_json_data()
+    # return 
+    return {'token': token}
 
 @app.get('/comercializacao/{year}')
 async def get_commercialization(

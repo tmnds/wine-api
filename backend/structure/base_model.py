@@ -1,5 +1,5 @@
 from enum import Enum
-
+from pydantic import BaseModel
 
 class ProcessamentoModel(str, Enum):
     viniferas = 'viniferas'
@@ -19,3 +19,9 @@ class ExportacaoModel(str, Enum):
     espumante = 'espumante'
     uva_fresca = 'uva_fresca'
     suco_uva = 'suco_uva'
+
+class User(BaseModel):
+    username: str
+    email: str | None = None
+    full_name: str | None = None
+    disable: str | None = None

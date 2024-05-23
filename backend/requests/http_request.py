@@ -12,7 +12,7 @@ class Requisition:
 
     def __init__(self):
         self.url = 'http://vitibrasil.cnpuv.embrapa.br/index.php?'
-        self.url_abas = load( open('backend/config.json') )
+        self.url_abas = load( open('backend/utils/config.json') )
 
     def get_request(self, url):
         
