@@ -5,3 +5,5 @@ fastapi==0.111.0
 uvicorn==0.29.0
 python-multipart==0.0.9
 pydantic==2.7.1
+pyjwt==2.8.0
+passlib==1.7.4

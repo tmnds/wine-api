@@ -14,7 +14,6 @@ collect = Collector()
 
 '''
     Authentication TEST
-
 '''
 
 fake_users_db = {
